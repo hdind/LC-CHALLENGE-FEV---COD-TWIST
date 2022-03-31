@@ -1,0 +1,75 @@
+def c_char2int(c):
+    if c == ".":
+        return 27
+    elif c == "_":
+        return 0
+    return ord(c) - 96
+
+def c_int2char(x):
+    if x == 27:
+        return "."
+    elif x == 0:
+        return "_"
+    return chr(x + 96)
+
+def codificar(texto, chave_k):
+    lista_textoplano = list(texto)
+    i = 0
+    codigoplano = []
+    
+    for i in lista_textoplano:
+        codigoplano.append(c_char2int(i))
+        
+    n = len(codigoplano)
+    cifracodigo = [None] * n
+    i = 0
+    
+    for i in range(n):
+        cifracodigo[i] = (codigoplano[(chave_k * i) % n] - i) % 28
+        
+    i= 0
+    lista_textocifrado = []
+    
+    for i in cifracodigo:
+        lista_textocifrado.append(c_int2char(i))
+        
+    textocifrado = "".join(lista_textocifrado)
+    return print(f'Frase final: {textocifrado}')
+    
+def decodificar(texto, chave_k):
+    lista_textocifrado = list(texto)
+    i = 0
+    cifracodigo = []
+    
+    for i in lista_textocifrado:
+        cifracodigo.append(c_char2int(i))
+        
+    n = len(cifracodigo)
+    codigoplano = [None] * n
+    i = 0
+    
+    for i in range(n):
+        codigoplano[(chave_k * i) % n] = (cifracodigo[i] + i) % 28
+        
+    i = 0
+    lista_textoplano = []
+
+    for i in codigoplano:
+        lista_textoplano.append(c_int2char(i))
+    textoplano = "".join(lista_textoplano)
+    
+    return print(f'Frase final: {textoplano}')
+
+def main():
+    escolha = int(input("Digite 0 para codificar ou 1 para decodificar: "))
+    chave_k = int(input("Digite a chave: "))
+    texto = input("Digite a mensagem: ")
+    texocifrado = None
+    textoplano = None
+    
+    if escolha == 0:
+        codificar(texto, chave_k)
+    else:
+        decodificar(texto, chave_k)
+        
+main()
